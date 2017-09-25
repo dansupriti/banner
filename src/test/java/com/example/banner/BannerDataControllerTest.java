@@ -3,6 +3,7 @@ package com.example.banner;
 
 import com.example.banner.controller.BannerDataController;
 import com.example.banner.request.StoreRequest;
+import com.example.banner.response.BannerResponse;
 import com.example.banner.service.BannerDataService;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,12 +32,12 @@ public class BannerDataControllerTest {
     @Test
     public void testShouldInsertBannerAndReturn200OK(){
         //given
-        StoreRequest storeRequest = new StoreRequest();
-
+        StoreRequest storeRequest = new StoreRequest("123", "bannerTtile1", "bannerDescription", new Date());
 
         //when
-        bannerDataController.insert(storeRequest);
+       // BannerResponse expectedBannerResponse = bannerDataController.insert(storeRequest);
 
         //then
+
     }
 }

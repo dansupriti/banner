@@ -1,8 +1,11 @@
 package com.example.banner.service;
 
+import com.example.banner.dao.BannerDataDao;
+import com.example.banner.factory.BannerFactory;
 import com.example.banner.request.StoreRequest;
 import com.example.banner.response.BannerResponse;
-import lombok.Setter;
+import entity.Banner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,7 +14,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class BannerDataService {
 
-    public BannerResponse insert(StoreRequest storeRequest){
-        return null;
+    private BannerFactory bannerFactory;
+
+    private BannerDataDao bannerDataDao;
+
+
+    @Autowired
+    public BannerDataService(BannerFactory bannerFactory, BannerDataDao bannerDataDao) {
+        this.bannerFactory = bannerFactory;
+        this.bannerDataDao = bannerDataDao;
+    }
+
+    public void insert(StoreRequest storeRequest) {
+        Banner banner = bannerFactory.getBannerObject(storeRequest.getBannerId(), storeRequest.getBannerTitle(),
+                storeRequest.getBannerDescription(), storeRequest.getBannerExpiryDate());
+        bannerDataDao.insert(banner);
+    }
+
+    public BannerResponse display(){
+        return bannerDataDao.display();
     }
 }

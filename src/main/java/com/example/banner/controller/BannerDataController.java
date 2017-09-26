@@ -1,38 +1,40 @@
 package com.example.banner.controller;
 
 import com.example.banner.request.StoreRequest;
-import com.example.banner.response.BannerResponse;
 import com.example.banner.service.BannerDataService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Created by supritidan on 2017/09/23.
- */
 @RestController
 public class BannerDataController {
 
-    private BannerDataService bannerDataService;
+	private BannerDataService bannerDataService;
 
-    @Autowired
-    public BannerDataController(BannerDataService bannerDataService){
-        this.bannerDataService = bannerDataService;
-    }
+	private Map<String, String> ips;
 
-    @PostMapping("/v1/banners")
-    @ResponseStatus(HttpStatus.OK)
-    public void insert(@RequestBody StoreRequest storeRequest){
-        bannerDataService.insert(storeRequest);
-    }
+	@Autowired
+	public BannerDataController(BannerDataService bannerDataService, Map<String, String> ips) {
+		this.bannerDataService = bannerDataService;
+		this.ips = ips;
+	}
 
-    @GetMapping("/v1/banners")
-    @ResponseStatus(HttpStatus.OK)
-    public BannerResponse display(@RequestParam String ipAddress){
-        return bannerDataService.display();
-    }
+	@PostMapping("/v1/banners")
+	@ResponseStatus(HttpStatus.OK)
+	public void insert(@RequestBody StoreRequest storeRequest) {
+		bannerDataService.insert(storeRequest);
+	}
+
+	@GetMapping("/v1/banners")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Map> display(@RequestParam(required = false) String ipAddress) {
+		return bannerDataService.display(ips, ipAddress);
+	}
 }
